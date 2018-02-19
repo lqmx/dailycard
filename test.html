@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="dep/jquery.js"></script>
+</head>
+<body>
+<script src="day.js"></script>
+<script>
+    $(function () {
+        var data = [];
+        $.each(day_data, function (k, v) {
+            data.unshift(v);
+        });
+       $.each(data, function (k, v) {
+           $('body').append('<p>' + v.date + ' ' + v.text + ' ' + v.img + '</p>');
+       });
+    });
+</script>
+</body>
+</html>
