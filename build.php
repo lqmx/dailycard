@@ -22,7 +22,7 @@ HTML;
 
 
 $htmlCard = <<<CARD
-<div class="card">
+<div class="card" data-id="%s">
         <div class="circle"></div>
         <div class="main">
             <img src="../data/%s" alt="" draggable="false">
@@ -48,7 +48,7 @@ $html = "";
 if(count($dailyCard)%3==0) {
     $dailyCard = array_chunk ($dailyCard, 3);
     $dailyCard = array_reverse($dailyCard);
-    foreach ($dailyCard as $v) {
+    foreach ($dailyCard as $k => $v) {
         $date = str_replace("> ", "", $v[0]);
         $txt = str_replace("> ", "", $v[1]);
 
@@ -61,7 +61,7 @@ if(count($dailyCard)%3==0) {
         }
 //        echo $txt , ' ', strlen($txt), ' ', $fontSize, PHP_EOL;
         $img = str_replace("> ", "", $v[2]);
-        $html .= sprintf ($htmlCard, $img, $fontSize, $txt, $date);
+        $html .= sprintf ($htmlCard, $k, $img, $fontSize, $txt, $date);
     }
 }
 

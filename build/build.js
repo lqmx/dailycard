@@ -101,6 +101,17 @@ $(function () {
     var cardInfo = [];
     var winHeight = $(document).height(),
         winWidth = $(document).width();
+    var scale = 2;
+    var cardSize = {
+        width: 180,
+        height: 280
+    };
+    var middle = {
+        height: (winHeight-cardSize.height)/2,
+        width: (winWidth-cardSize.width)/2
+    };
+    var isView = true;
+    var preCardId = -1;
 
     var $card = $('.card');
 
@@ -118,20 +129,36 @@ $(function () {
             transform: card.transform
         }).show();
     });
+
     $card.each(function (k, v) {
         $(v).click(function () {
-            $(this).css({
-                "z-index": 2,
-                transform: "rotate(0deg) scale(2)"
-            });
+            var id = $(v).attr('data-id');
+            if(preCardId != id && preCardId != -1) {
+                return;
+            }
+            if(isView) {
+                var left = $(this).css('left');
+                left = parseFloat(left.substr(0, left.length - 2));
+                var top = $(this).css('top');
+                top = parseFloat(top.substr(0, top.length - 2));
+                $(this).css({
+                    transform: "translateX(" + (middle.width - left) + "px) translateY(" + (middle.height - top) + "px) rotate(0deg) scale(" + scale + ")",
+                    "z-index": 2
+                });
+                preCardId = id;
+            } else {
+                if(Drag.getDragStatus() == Drag.DRAG_STATUS.DRAGING) return;
+                $(this).css({
+                    transform: cardInfo[k].transform,
+                    "z-index": 1
+                });
+                preCardId = -1;
+            }
+            isView = !isView;
         });
-        $(v).mouseleave(function () {
-            if(Drag.getDragStatus() == Drag.DRAG_STATUS.DRAGING) return;
-            $(this).css({
-                transform: cardInfo[k].transform,
-                "z-index": 1
-            });
-        });
+        // $(v).mouseleave(function () {
+        //
+        // });
         // $(v).hover(function () {
         //     $(this).css({
         //         "z-index": 2
